@@ -1,0 +1,26 @@
+{
+  "name": "datatables-starter",
+  "version": "2.0.0",
+  "description": "Get Started with DataTables for Your App",
+  "scripts": {
+    "start": "parcel index.html  --no-source-maps",
+    "browserslist": "> 0.5%, last 2 versions, not dead",
+    "build": "parcel build index.html",
+    "upload": "node ./scripts/upload",
+    "build:upload": "npm run build && npm run upload",
+    "openfile": "node ./scripts/openFileOnServer",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jeremy@integratingmagic.io",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "open": "^8.2.1",
+    "parcel": "^2.8.2",
+    "prettier": "2.6.2"
+  }
+}

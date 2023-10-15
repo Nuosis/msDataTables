@@ -1,7 +1,32 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-top: 50px;
+  padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
+  font-family: verdana;
+  font-size: 11px;
 }
+
+#dtable {
+  font-family: verdana;
+  font-size: 11px;
+  width: auto !important;
+}
+
+#dtableSide {
+  font-family: verdana;
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+#dtable thead {
+  background-color: #555;  /* Dark Gray */
+  color: white;  /* Text Color */
+}
+
+#dtableSide thead {
+  background-color: #555;  /* Dark Gray */
+  color: white;  /* Text Color */
+}
+

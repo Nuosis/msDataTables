@@ -8,6 +8,25 @@ body {
   font-size: 11px;
 }
 
+#container {
+  margin-top: 50px;
+}
+
+#emails {
+  max-height: calc(8 * 1.5em); /* Assuming each row's height is approximately 1.5em */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+#phones {
+  max-height: calc(8 * 1.5em); /* Assuming each row's height is approximately 1.5em */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+#contacts {
+  max-height: calc(8 * 1.5em); /* Assuming each row's height is approximately 1.5em */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
 #dtable {
   font-family: verdana;
   font-size: 11px;

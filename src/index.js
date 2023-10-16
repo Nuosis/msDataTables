@@ -5,6 +5,7 @@
 // global options
 // https://datatables.net/reference/option/
 
+/*
 function transformData (dataArray) {
   const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
 
@@ -56,12 +57,283 @@ function transformData (dataArray) {
 
   return resultArray;
 }
+*/
 
 let table;
 let mainTable;
 
+window.renderContacts = (data) => {
+  // Create table
+  const table = document.createElement("table");
+  table.className = "table";
+
+  // Create table header
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headerRow.style.position = "sticky";
+  headerRow.style.top = "0";
+  headerRow.style.zIndex = "1"; // Optional, to ensure the row is above other elements
+  headerRow.style.backgroundColor = "#FFFFFF";
+
+  ["Contact"].forEach(text => {
+    const th = document.createElement("th");
+    th.innerText = text;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  // Create table body
+  const tbody = document.createElement("tbody");
+  data.forEach(item => {
+    const row = document.createElement("tr");
+    const headers = ["ID", "dapiID", "Name"]
+    row.addEventListener("click", function () {
+      const cellData = {};
+      // Loop through each cell in the row
+      for (let i = 0; i < this.cells.length; i++) {
+        const header = headers[i];
+        // Get the content of the cell
+        const cellContent = this.cells[i].innerText;
+        // Assign the content to the object
+        cellData[header] = cellContent;
+      }
+      console.log(cellData);
+      const obj = { record: cellData, method: "contactRowClick" };
+      FileMaker.PerformScript("customers . loadWebViewer . worksheets . callbacks", JSON.stringify(obj)); // Log or use the rowData
+    });
+
+    // Add hidden id
+    const recordID = document.createElement("td");
+    recordID.innerText = item["customerContacts::__ID"];
+    recordID.style.display = "none"; // This will hide the cell
+    row.appendChild(recordID);
+
+    // Add hidden dataApiID
+    const dapiID = document.createElement("td");
+    dapiID.innerText = item.recordId;
+    dapiID.style.display = "none"; // This will hide the cell
+    row.appendChild(dapiID);
+
+    // Add Name
+    const nameCell = document.createElement("td");
+    nameCell.innerText = item["customerContacts::Name_of_Relation"];
+    if (item["customerContacts::Role"] === "Primary Contact") {
+      nameCell.style.fontWeight = "bold";
+    }
+    row.appendChild(nameCell);
+
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(tbody);
+
+  // Append the table to the worksheetHeader div
+  document.getElementById("contacts").appendChild(table);
+}
+
+window.renderPhones = (data) => {
+  // Create table
+  const table = document.createElement("table");
+  table.className = "table";
+
+  // Create table header
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headerRow.style.position = "sticky";
+  headerRow.style.top = "0";
+  headerRow.style.zIndex = "1"; // Optional, to ensure the row is above other elements
+  headerRow.style.backgroundColor = "#FFFFFF";
+  ["Label", "Phone", "Ext"].forEach(text => {
+    const th = document.createElement("th");
+    th.innerText = text;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  // Create table body
+  const tbody = document.createElement("tbody");
+  data.forEach(item => {
+    const row = document.createElement("tr");
+    const headers = ["ID", "dapiID", "Label", "Phone", "Ext"]
+    row.addEventListener("click", function () {
+      const cellData = {};
+      // Loop through each cell in the row
+      for (let i = 0; i < this.cells.length; i++) {
+        const header = headers[i];
+        // Get the content of the cell
+        const cellContent = this.cells[i].innerText;
+        // Assign the content to the object
+        cellData[header] = cellContent;
+      }
+      console.log(cellData);
+      const obj = { record: cellData, method: "phonesRowClick" };
+      FileMaker.PerformScript("customers . loadWebViewer . worksheets . callbacks", JSON.stringify(obj)); // Log or use the rowData
+    });
+
+    // Add hidden id
+    const recordID = document.createElement("td");
+    recordID.innerText = item["customersPhone::__ID"];
+    recordID.style.display = "none"; // This will hide the cell
+    row.appendChild(recordID);
+
+    // Add hidden dataApiID
+    const dapiID = document.createElement("td");
+    dapiID.innerText = item.recordId;
+    dapiID.style.display = "none"; // This will hide the cell
+    row.appendChild(dapiID);
+
+    // Add Label
+    const labelCell = document.createElement("td");
+    labelCell.innerText = item["customersPhone::Label"];
+    row.appendChild(labelCell);
+
+    // Add Number
+    const noCell = document.createElement("td");
+    noCell.innerText = item["customersPhone::Number"];
+    row.appendChild(noCell);
+
+    // Add Ext
+    const extCell = document.createElement("td");
+    extCell.innerText = item["customersPhone::Extension"];
+    row.appendChild(extCell);
+
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(tbody);
+
+  // Append the table to the worksheetHeader div
+  document.getElementById("phones").appendChild(table);
+}
+
+window.renderEmail = (data) => {
+  // Create table
+  const table = document.createElement("table");
+  table.className = "table";
+
+  // Create table header
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  headerRow.style.position = "sticky";
+  headerRow.style.top = "0";
+  headerRow.style.zIndex = "1"; // Optional, to ensure the row is above other elements
+  headerRow.style.backgroundColor = "#FFFFFF";
+  ["Label", "Email"].forEach(text => {
+    const th = document.createElement("th");
+    th.innerText = text;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  // Create table body
+  const tbody = document.createElement("tbody");
+  data.forEach(item => {
+    const row = document.createElement("tr");
+    const headers = ["ID", "dapiID", "Label", "Email"]
+    row.addEventListener("click", function () {
+      const cellData = {};
+      // Loop through each cell in the row
+      for (let i = 0; i < this.cells.length; i++) {
+        const header = headers[i];
+        // Get the content of the cell
+        const cellContent = this.cells[i].innerText;
+        // Assign the content to the object
+        cellData[header] = cellContent;
+      }
+      // console.log(cellData);
+      const obj = { record: cellData, method: "emailsRowClick" };
+      FileMaker.PerformScript("customers . loadWebViewer . worksheets . callbacks", JSON.stringify(obj)); // Log or use the rowData
+    });
+
+    // Add hidden id
+    const recordID = document.createElement("td");
+    recordID.innerText = item["customersEmail::__ID"];
+    recordID.style.display = "none"; // This will hide the cell
+    row.appendChild(recordID);
+
+    // Add hidden dataApiID
+    const dapiID = document.createElement("td");
+    dapiID.innerText = item.recordId;
+    dapiID.style.display = "none"; // This will hide the cell
+    row.appendChild(dapiID);
+
+    // Add Label
+    const labelCell = document.createElement("td");
+    labelCell.innerText = item["customersEmail::Label"];
+    row.appendChild(labelCell);
+
+    // Add Email
+    const emailCell = document.createElement("td");
+    emailCell.innerText = item["customersEmail::Email"];
+    row.appendChild(emailCell);
+
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(tbody);
+
+  // Append the table to the worksheetHeader div
+  document.getElementById("emails").appendChild(table);
+}
+
+window.priceBreakdown = (data) => {
+  // Create table
+  const table = document.createElement("table");
+  table.className = "table";
+
+  // Create table header
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  ["Total", "Provider"].forEach(text => {
+    const th = document.createElement("th");
+    th.innerText = text;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  // Create table body
+  const tbody = document.createElement("tbody");
+  data.forEach(item => {
+    const row = document.createElement("tr");
+
+    // Add Total
+    const totalCell = document.createElement("td");
+    const totalCellFormattedAmount = new Intl.NumberFormat("en-US", { style: "currency", currency: "CAD" }).format(item.savedAmount_TOTAL);
+    totalCell.innerText = totalCellFormattedAmount;
+    row.appendChild(totalCell);
+
+    // Add ProviderAmount
+    const provCell = document.createElement("td");
+    const provCellFormattedAmount = new Intl.NumberFormat("en-US", { style: "currency", currency: "CAD" }).format(item.savedAmount_TOTALPROVIDER);
+    provCell.innerText = provCellFormattedAmount;
+    row.appendChild(provCell);
+
+    // Add ProviderPercent
+    const provPercent = document.createElement("td");
+    const percentage = (item.savedAmount_TOTAL / item.savedAmount_TOTALPROVIDER) * 100;
+    const formattedPercentage = `${percentage.toFixed(2)}%`;
+    provCell.innerText = formattedPercentage;
+    row.appendChild(provPercent);
+
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(tbody);
+
+  // Append the table to the worksheetHeader div
+  document.getElementById("emails").appendChild(table);
+}
+
 window.loadTable = (json) => {
   const obj = JSON.parse(json);
+  console.log(obj);
+  const wsInfo = obj.wsInfo;
+  console.log(wsInfo);
+  // priceBreakdown(wsInfo);
   const data = obj.data;
   // console.log(data);
   const columns = obj.columns;
@@ -70,6 +342,7 @@ window.loadTable = (json) => {
   mainTable = $("#dtable").DataTable({
     destroy: true,
     data,
+    dom: "lrtp",
     columns,
     columnDefs: [
       {
@@ -90,33 +363,8 @@ window.loadTable = (json) => {
         searchable: false,
       },
       {
-        target: 3,
-        width: "70px",
-        type: 'date',
-        render: function (data, type, row) {
-          const date = new Date(data); // Assume the timestamp is in milliseconds
-          return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
-        }
-      },
-      {
-        target: 4, // EMPLOYEE name
-        width: "120px",
-      },
-      // target 4 EMPLOYEE NAME
-      {
-        target: 5, // job name
-        width: "680px",
-      },
-      {
-        targets: 6,
-        width: "50px"
-      },
-      {
-        targets: 7,
-        width: "20px",
-        data: null,
-        orderable: false,
-        defaultContent: "<button id='delete' class='btn' style='padding: 0;vertical-align: top; font: 1px solid red;'><span class='btn-label' style='margin: 0; padding: 0;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' class='bi bi-x-circle' viewBox='0 0 16 16'><path d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/><path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/></svg></span></button>",
+        targets: 4,
+        width: 200,
       }
     ],
 
@@ -145,7 +393,7 @@ window.loadTable = (json) => {
     pageLength: 25,
     ordering: true,
     order: [
-      [4, "asc"],
+      [2, "asc"],
     ],
   });
 
@@ -155,21 +403,29 @@ window.loadTable = (json) => {
 
 window.loadSideBar = (json) => {
   const obj = JSON.parse(json);
-  const passedData = obj.data;
-  // console.log("passedSideBar", passedData);
+  // console.log("passedSideBar", obj);
+  const data = obj.data;
+  // console.log("passedSideBar", data);
   /*
   example input object
   [{"fieldData":{"OT_Emp_Total":0,"Regular_Emp_Total":0,"dateGroup":"","dateWorked":"09/18/2023","flag_Lunch":1,"flag_endDay_override":"","flag_open_a":"","flag_unGrouped_a":"","hours":48600,"id":"DD90CA38-C079-3D45-8387-7829F59DD5A3","id_employee":"7ADB7E19-6F7F-6E4B-A5B4-6F70413B2C73","lunchEnd":"","lunchStart":"","month":9,"overtimeHours_c":5.5,"regularHours_c":8,"timeEnd":"00:30:00","timeStart":"10:30:00","timestampIN":"09/17/2023 10:30:00","timestampOUT":"09/18/2023 00:30:00","timestampOUT_actual":"","totalHours_c":13.5,"totalWorked_c":"13:30:00","week":38,"weekStartDate_a":"09/18/2023","year":2023,"zCreatedBy":"moldmaker","zCreationTimestamp":"09/18/2023 00:28:07","zModificationTimestamp":"09/19/2023 08:59:24","zModifiedBy":"JodiWright"},"modId":"12","portalData":{"employeeHours_EMPLOYEE":[{"employeeHours_EMPLOYEE::department":"Mold Making","employeeHours_EMPLOYEE::nameDisplay_a":"Quan Tran","modId":"17","recordId":"246"}]},"portalDataInfo":[{"database":"Jobs","foundCount":1,"returnedCount":1,"table":"employeeHours_EMPLOYEE"}],"recordId":"8535"},
   */
   // transform data here
-  const data = transformData(passedData);
+  // const data = transformData(passedData);
   // console.log("transformedSideBar", data);
 
   // initialize table
   const columns = obj.columns;
+  const custEmails = obj.cust.emails;
+  const custContacts = obj.cust.contacts;
+  const custPhones = obj.cust.phones;
+  renderContacts(custContacts);
+  renderPhones(custPhones);
+  renderEmail(custEmails);
   table = $("#dtableSide").DataTable({
     destroy: true,
     data,
+    dom: "lrtp",
     columns,
     columnDefs: [
       {
@@ -180,16 +436,17 @@ window.loadSideBar = (json) => {
         // render: DataTable.render.number(null, null, 2, '$'),
       },
       {
-        targets: 1, // employeeID FROM id_employee
+        targets: 1, // select flag for active or not
         visible: false,
         searchable: false,
       },
       {
         targets: 2,
-        visible: false, // department
-        searchable: true,
+        visible: false, // dAPI recordID
+        searchable: false,
       },
       // target 3 employeee name FROM employeeHours_EMPLOYEE::nameDisplay_a
+      /*
       {
         target: 4, // allocated SUM OF totalHours_c
         width: "75px"
@@ -204,6 +461,7 @@ window.loadSideBar = (json) => {
         searchable: false,
         orderable: false,
       }
+      */
     ],
 
     colReorder: false,
@@ -212,20 +470,42 @@ window.loadSideBar = (json) => {
     pageLength: 25,
     ordering: true,
     order: [
-      [3, "asc"],
+      [
+        2, "desc",
+        3, "asc"
+      ],
     ],
   });
-  const firstDiv = $('#dtableSide_wrapper .row').first().find('.col-md-6').first();
-  const secondDiv = $('#dtableSide_wrapper .row').first().find('.col-md-6').last();
-  firstDiv.removeClass('col-md-6').addClass('col-md-2');
-  secondDiv.removeClass('col-md-6').addClass('col-md-10');
+  // const firstDiv = $('#dtableSide_wrapper .row').first().find('.col-md-6').first();
+  // const secondDiv = $('#dtableSide_wrapper .row').first().find('.col-md-6').last();
+  // firstDiv.removeClass('col-md-6').addClass('col-md-2');
+  // secondDiv.removeClass('col-md-6').addClass('col-md-10');
+
+  // Iterate through each row in the table
+  table.rows().every(function () {
+    const rowData = this.data();
+    // console.log(rowData["customerWorksheets::Select"])
+    // Check the value in column 3
+    if (rowData["customerWorksheets::Select"] === "1") {
+      const cellValue = rowData["customerWorksheets::Worksheet Name"];
+      // console.log(cellValue);
+      // Find the <tr> element with the matching text
+      const tr = $(this.node()).closest("tr").filter(function () {
+        return $(this).text() === cellValue;
+      });
+      // console.log(tr);
+      // Apply bold styling to the found <tr> element
+      tr.find("td").css("font-weight", "bold");
+    }
+    return true; // Return true to continue iterating
+  });
 };
 
 $("#dtableSide").on("click", "tr", function () {
   const row = table.row(this);
   const data = row.data();
-  const obj = { record: data, button: "sideRowClick" };
-  FileMaker.PerformScript("dataTable . showRowDetails", JSON.stringify(obj));
+  const obj = { record: data, load: "thisWorkSheet" };
+  FileMaker.PerformScript("customers . loadWebViewer . worksheets", JSON.stringify(obj));
 })
 
 $("#dtable").on("click", "tbody td", function () {
